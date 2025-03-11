@@ -18,7 +18,7 @@ public class DBUtils {
         Connection con=null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url="jdbc:sqlserver://VoDongDucKhai\\SQLEXPRESS:1433;databaseName=VoDongDucKhai_Spring2025";
+            String url="jdbc:sqlserver://VoDongDucKhai\\SQLEXPRESS:1433;databaseName=ttk_piano_db";
             String username="sa";
             String password="12345";
             con=DriverManager.getConnection(url, username, password);
