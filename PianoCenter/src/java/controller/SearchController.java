@@ -10,6 +10,7 @@ import dto.CourseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,15 +23,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SearchController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private List<CourseDTO> searchCourseByNameAndCategory(String name,String category){
+        
+        CourseDAO dao= new CourseDAO();
+        ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)dao.read(name);
+        if(category.equalsIgnoreCase("all")){return courses;}
+        ArrayList<CourseDTO> coursesWC= new ArrayList<>();
+        for(CourseDTO dto: courses){
+            if(dto.getCategory().equalsIgnoreCase(category)){coursesWC.add(dto);}
+        }
+        return coursesWC;
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -38,8 +42,8 @@ public class SearchController extends HttpServlet {
         String url=MainController.homePage;
         try {
            String searchValue=request.getParameter("txtSearch");
-            CourseDAO dao= new CourseDAO();
-            ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)dao.read(searchValue);
+           String category=request.getParameter("category");
+            ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)searchCourseByNameAndCategory(searchValue, category);
             request.setAttribute("courses", courses);
             if(courses!=null){
                 RequestDispatcher rd= request.getRequestDispatcher(url);

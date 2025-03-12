@@ -18,7 +18,7 @@
     
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Home Page</title>
     </head>
     <body>
         <%if(username!=null){%>
@@ -29,11 +29,28 @@
         <form action="MainController">
             <input type="text" name="txtSearch" value="" />
             <input type="submit" name="btAction" value="Search" />
+            <select name="category">
+                <option value="All">All</option>>
+                <option value="Art">Art</option>>
+                <option value="Music">Music</option>>
+            </select>
         </form>
+        <br>
+        <%if(username!=null){%>
+        <form action="MainController">
+            <input type="submit" name="btAction" value="Logout" />
+        </form>
+        <%}else{%>
+
+        <a href="LoginPage.jsp">Login</a>
+        <a href="RegisterPage.jsp">Sign up</a>
+        
+        <br><br>
+        <%}%>
         <br><br>
 
-
-    <%if(!courses.isEmpty()){%>    
+    <%if(courses!=null){%>
+        <%if(!courses.isEmpty()){%>
         <table border="1">
             <thead>
                 <tr>
@@ -65,6 +82,9 @@
                     <td><%=dto.getStatus()%></td>
                     <td><%=dto.getQuantity()%></td>
                 </tr>
+                <%}%>
+            <%}else{%>
+            <h1 style="color: red">No record found!!!</h1>
             <%}%>
             </tbody>
         </table>

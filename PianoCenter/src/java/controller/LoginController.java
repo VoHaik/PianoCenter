@@ -44,11 +44,14 @@ public class LoginController extends HttpServlet {
         String username=request.getParameter("txtUsername");
         String password=request.getParameter("txtPassword");
         String url;
+        boolean validateLogin= checkLogin(username, password);
+        
         try{
-            if(checkLogin(username, password)){
+            if(validateLogin){
                url=MainController.homePage;
-                HttpSession session= request.getSession();
+               HttpSession session= request.getSession();
                 session.setAttribute("username", username);
+                request.setAttribute("invalidLogin", true);
             }
             else{
                 url=MainController.loginPage;

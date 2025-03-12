@@ -12,45 +12,31 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author OS
  */
-public class MainController extends HttpServlet {
-    static final String loginPage="LoginPage.jsp";
-    static final String registerPage="RegisterPage.jsp";
-    static final String checkingController="CheckRegisterForm";
-    static final String loginController="LoginController";
-    static final String homePage="HomePage.jsp";
-    static final String searchController="SearchController";
-    static final String logoutController="LogoutController";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+public class LogoutController extends HttpServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String action=request.getParameter("btAction");
-        String url="";
+        String url=MainController.loginPage;
         try{
-            if(url.isEmpty()){
-                if(action.matches("Login")){url=loginController;}
-                else if(action.equals("Register")){url=checkingController;}
-                else if(action.equals("Search")){url=searchController;}
-                else if(action.equals("Logout")){url=logoutController;}
-                RequestDispatcher rd= request.getRequestDispatcher(url);
-                rd.forward(request, response);
-            }else{out.println("Error With url");}
-        }catch(Exception e){e.printStackTrace();}
+            HttpSession session= request.getSession(false);
+
+            if(session!=null){
+                session.invalidate();
+            }
+
+            RequestDispatcher rd= request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

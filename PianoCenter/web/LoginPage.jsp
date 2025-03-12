@@ -42,7 +42,7 @@ and open the template in the editor.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 </head>
         <%
-            Boolean invalidLogin=(Boolean)request.getAttribute("invalidLogin");
+            Boolean invalidLogin=(Boolean)session.getAttribute("invalidLogin");
         %>
 <body>
   <div class="wrapper">
@@ -68,6 +68,6 @@ and open the template in the editor.
       <div class="row button">
         <input type="submit" value="Login" name="btAction" />
       </div>
-      <div class="signup-link">Not a member? <a href="MainController?btAction=Register">Signup now</a></div>
+        <div class="signup-link"><a style="color: black" href="HomePage.jsp">BackTo HomePage</a> <a href="MainController?btAction=Register">Signup now</a></div>
     </form>
   </div>

@@ -30,16 +30,16 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
     }
 
     @Override
-    public List<CourseDTO> read(String bookName){
+    public List<CourseDTO> read(String searchValue){
         Connection con=null;
         ResultSet rs= null;
         PreparedStatement stm=null;
         ArrayList<CourseDTO> courses= new ArrayList<>();
-        String sql="select * from Courses where name = ?";
+        String sql="select * from Courses where name like ?";
         try {
             con=dbutils.DBUtils.makeConnection();
             stm=con.prepareStatement(sql);
-            stm.setString(1, bookName);
+            stm.setString(1, "%"+searchValue+"%");
             rs=stm.executeQuery();
             if(rs!=null){
                 while(rs.next()){
@@ -57,6 +57,7 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
                     CourseDTO course= new CourseDTO(courseID, name, description, tutionFee, startDate, endDate, category, createDate, lastUpdateUser, status, quantity);
                     courses.add(course);
                 }
+                return courses;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,7 +81,7 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
                 }
 }
         }
-        return courses;
+        return null;
     }
 
     @Override
