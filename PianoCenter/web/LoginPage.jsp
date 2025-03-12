@@ -60,6 +60,8 @@ and open the template in the editor.
             <%if(invalidLogin!=null){%>
                 <%if(invalidLogin==false){%>
                 <span style="color: red">Your username or password is invalid!!!</span>
+                <%}else{%>
+                
                 <%}%>
             <%}%>
         </div>

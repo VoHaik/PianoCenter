@@ -23,6 +23,7 @@ public class MainController extends HttpServlet {
     static final String checkingController="CheckRegisterForm";
     static final String loginController="LoginController";
     static final String homePage="HomePage.jsp";
+    static final String searchController="SearchController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,6 +44,7 @@ public class MainController extends HttpServlet {
             if(url.isEmpty()){
                 if(action.matches("Login")){url=loginController;}
                 else if(action.matches("Register")){url=checkingController;}
+                else if(action.matches("Search")){url=searchController;}
                 RequestDispatcher rd= request.getRequestDispatcher(url);
                 rd.forward(request, response);
             }else{out.println("Error With url");}
