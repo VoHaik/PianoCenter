@@ -93,5 +93,30 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
     public boolean delete(CourseDTO entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+    public List<String> getCategory() throws ClassNotFoundException, SQLException{
+//        courses=read("");
+//        ArrayList<String> categories= new ArrayList<>();
+//        for(CourseDTO dto:courses){
+//            if(!categories.contains(dto.getCategory())){categories.add(dto.getCategory());}
+//        }
+//        return categories;
+        ArrayList<String> categories= new ArrayList<>();
+        Connection con=dbutils.DBUtils.makeConnection();
+        ResultSet rs= null;
+        PreparedStatement stm= null;
+        String sql="select category from Courses group by category";
+        try {
+            stm=con.prepareStatement(sql);
+            rs=stm.executeQuery();
+            while(rs.next()){
+                categories.add(rs.getString("category"));
+            }
+        } catch (Exception e) {e.printStackTrace();
+        }finally{
+            if(con!=null){con.close();}
+            if(stm!=null){stm.close();}
+            if(rs!=null){rs.close();}
+        }
+        return categories;
+    }
 }

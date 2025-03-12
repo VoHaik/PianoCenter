@@ -4,6 +4,7 @@
     Author     : OS
 --%>
 
+<%@page import="dao.CourseDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dto.CourseDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +13,8 @@
     <%
         String username=(String)session.getAttribute("username");
         ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)request.getAttribute("courses");
+        CourseDAO dao= new CourseDAO();
+        ArrayList<String> categories= (ArrayList<String>)dao.getCategory();
     %>
     
     
@@ -31,8 +34,16 @@
             <input type="submit" name="btAction" value="Search" />
             <select name="category">
                 <option value="All">All</option>>
-                <option value="Art">Art</option>>
-                <option value="Music">Music</option>>
+                <%if(categories!=null){%>
+<!--                <option value="Art">Art</option>>
+                <option value="Music">Music</option>>-->
+                    <%
+                        int i=0;
+                        for(String category: categories){
+                     %>
+                <option><%=category%></option>
+                    <%i++;}%>
+                <%}%>
             </select>
         </form>
         <br>
