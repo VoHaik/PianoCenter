@@ -9,8 +9,11 @@ import dao.CourseDAO;
 import dto.CourseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,27 +26,46 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SearchController extends HttpServlet {
 
-    private List<CourseDTO> searchCourseByNameAndCategory(String name,String category){
+    private List<CourseDTO> searchCourseByNameAndCategory(String name,String category,int OFFSET,int PageSize){
         
         CourseDAO dao= new CourseDAO();
-        ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)dao.read(name);
+        ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)dao.read(name,category,OFFSET,PageSize);
         if(category.equalsIgnoreCase("all")){return courses;}
-        ArrayList<CourseDTO> coursesWC= new ArrayList<>();
-        for(CourseDTO dto: courses){
-            if(dto.getCategory().equalsIgnoreCase(category)){coursesWC.add(dto);}
-        }
-        return coursesWC;
+        return courses;
     }
     
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
+        
+        String searchValue=request.getParameter("txtSearch");
+        request.setAttribute("txtSearch", searchValue);
+        
+        String category=request.getParameter("category");
+        request.setAttribute("category", category);
+        
         String url=MainController.homePage;
+        
+        CourseDAO dao= new CourseDAO();
+        
+        int PageSize=5;
+        int PageNumber=(int)Math.ceil(dao.countRow(searchValue,category)/PageSize);
+        request.setAttribute("PageNumber", PageNumber);
+        out.print(PageNumber);
+        out.print(dao.countRow(searchValue,category));
+        
+        
+        Integer currentPage=1;
+        if(request.getParameter("currentPage")!=null){currentPage=Integer.parseInt(request.getParameter("currentPage"));}
+        
+        Integer OFFSET=(currentPage-1)*PageSize;
+        
+
         try {
-           String searchValue=request.getParameter("txtSearch");
-           String category=request.getParameter("category");
-            ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)searchCourseByNameAndCategory(searchValue, category);
+            ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)searchCourseByNameAndCategory(searchValue, category,OFFSET,PageSize);
             request.setAttribute("courses", courses);
             if(courses!=null){
                 RequestDispatcher rd= request.getRequestDispatcher(url);
@@ -69,7 +91,13 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -83,7 +111,13 @@ public class SearchController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

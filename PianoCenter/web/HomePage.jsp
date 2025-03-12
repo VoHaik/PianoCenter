@@ -15,6 +15,13 @@
         ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)request.getAttribute("courses");
         CourseDAO dao= new CourseDAO();
         ArrayList<String> categories= (ArrayList<String>)dao.getCategory();
+        Integer pageNumber= (Integer)request.getAttribute("PageNumber");
+        String lastSearchValue="";
+        if(request.getParameter("txtSearch")!=null){lastSearchValue=(String)request.getParameter("txtSearch");}
+        String lastCategory="All";
+        if(request.getParameter("category")!=null){lastCategory=(String)request.getParameter("category");}
+        
+//        Integer pageNumber= 5;
     %>
     
     
@@ -30,13 +37,15 @@
         <h1>Welcome !!!</h1>
         <%}%>
         <form action="MainController">
+            <%if(lastSearchValue.isEmpty()){%>
             <input type="text" name="txtSearch" value="" />
+            <%}else{%>
+            <input type="text" name="txtSearch" value="<%=lastSearchValue%>" />
+            <%}%>
             <input type="submit" name="btAction" value="Search" />
             <select name="category">
                 <option value="All">All</option>>
                 <%if(categories!=null){%>
-<!--                <option value="Art">Art</option>>
-                <option value="Music">Music</option>>-->
                     <%
                         int i=0;
                         for(String category: categories){
@@ -99,6 +108,9 @@
             <%}%>
             </tbody>
         </table>
+            <%for(int i=1;i<=pageNumber;i++){%>
+            <a href="SearchController?currentPage=<%=i%>&&txtSearch=<%=lastSearchValue%>&&category=<%=lastCategory%>"><%=i%></a>
+            <%}%>
     <%}%>    
     </body>
 </html>

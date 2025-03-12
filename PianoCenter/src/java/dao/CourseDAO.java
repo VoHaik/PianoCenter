@@ -23,23 +23,57 @@ import java.util.logging.Logger;
  * @author OS
  */
 public class CourseDAO implements ICRUD<CourseDTO, String>{
+    
+    public int countRow(String searchValue,String category) throws ClassNotFoundException, SQLException{
+        int numberOfRecords=0;
+        Connection con=dbutils.DBUtils.makeConnection();
+        ResultSet rs= null;
+        PreparedStatement stm=null;
+        String sql="SELECT COUNT(courseID) AS totalCourses FROM Courses where name like ? and category like ?  and status = 'Active' AND quantity > 0";
+        try {
+            stm=con.prepareStatement(sql);
+            stm.setString(1, "%"+searchValue+"%");
+            if(category.equalsIgnoreCase("all")){stm.setString(2, "%");}else{stm.setString(2, category);}
+            rs=stm.executeQuery();
+//            System.out.println(rs);
+            if(rs!=null){rs.next();numberOfRecords=rs.getInt("totalCourses");}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(con!=null){con.close();}
+            if(stm!=null){stm.close();}
+            if(rs!=null){rs.close();}
+        }
+        return numberOfRecords;
+    }
 
     @Override
     public boolean create(CourseDTO entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<CourseDTO> read(String searchValue){
+    
+    public List<CourseDTO> read(String searchValue,String categories,int OFFSET,int PageSize){
         Connection con=null;
         ResultSet rs= null;
         PreparedStatement stm=null;
         ArrayList<CourseDTO> courses= new ArrayList<>();
-        String sql="select * from Courses where name like ?";
+        String sql="SELECT * \n" +
+"FROM Courses \n" +
+"WHERE name like ? and status = 'Active' AND quantity > 0 and category like ?\n" +
+"ORDER BY createDate asc \n" +
+"OFFSET ? ROWS \n" +//OFFSET ở đây là số records sẽ được bỏ qua
+"FETCH NEXT ? ROWS ONLY;";// Trong khi đó fetch nó sẽ nạp số records tiếp theo sau khi được bỏ qua bởi offset
+        
         try {
             con=dbutils.DBUtils.makeConnection();
             stm=con.prepareStatement(sql);
             stm.setString(1, "%"+searchValue+"%");
+            if(categories.equalsIgnoreCase("all")){
+                stm.setString(2, "%");
+            }else{stm.setString(2, categories);}
+            stm.setInt(3, OFFSET);
+            stm.setInt(4, PageSize);
             rs=stm.executeQuery();
             if(rs!=null){
                 while(rs.next()){
@@ -94,12 +128,6 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     public List<String> getCategory() throws ClassNotFoundException, SQLException{
-//        courses=read("");
-//        ArrayList<String> categories= new ArrayList<>();
-//        for(CourseDTO dto:courses){
-//            if(!categories.contains(dto.getCategory())){categories.add(dto.getCategory());}
-//        }
-//        return categories;
         ArrayList<String> categories= new ArrayList<>();
         Connection con=dbutils.DBUtils.makeConnection();
         ResultSet rs= null;
@@ -119,4 +147,12 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
         }
         return categories;
     }
+
+    @Override
+    public List<CourseDTO> read(String String) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    
 }
