@@ -58,8 +58,8 @@ public class UserDAO implements ICRUD<UserDTO, String>{
     }
 
     @Override
-    public List<UserDTO> read(String String) {
-        List<UserDTO> users= new ArrayList<>();
+    public List<UserDTO> read(String userID) {
+        ArrayList<UserDTO> users= new ArrayList<>();
         Connection con=null;
         PreparedStatement stm= null;
         ResultSet rs=null;
@@ -67,44 +67,42 @@ public class UserDAO implements ICRUD<UserDTO, String>{
         try {
             con=dbutils.DBUtils.makeConnection();
             stm=con.prepareStatement(sql);
-            stm.setString(1, String);
+            stm.setString(1, userID);
             rs=stm.executeQuery();
             if(rs!=null){
                 while (rs.next()) {
                     String username=rs.getString("userID");
                     String password=rs.getString("password");
-                    String fullname=rs.getString("fullname");
+                    String fullname=rs.getString("fullName");
                     String email=rs.getString("email");
-                    String role=rs.getString("phone");
-                    String phone=rs.getString("role");
-                UserDTO user= new UserDTO(username, password, fullname, email, phone, role);
+                    String role=rs.getString("role");
+                    String phone=rs.getString("phone");
+                UserDTO user= new UserDTO(username, password, fullname, email, role, phone);
                 users.add(user);
                 }
                 return users;
             }    
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
+        }catch(Exception e){e.printStackTrace();}finally{
             if(con!=null){try {
                 con.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-    }
+}
             if(stm!=null){try {
                 stm.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-    }
+}
             if(rs!=null){try {
                 rs.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-    }
+}
         }
-        return null;
+        return users;
     }
 
     @Override

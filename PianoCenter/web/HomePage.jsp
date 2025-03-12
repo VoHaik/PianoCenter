@@ -18,26 +18,51 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Welcome <%=username%>!</h1>
-        <div>
-            <div class="header">
-                
-                
-            </div>
-            <div class="body">
-                <div class="">
-                    
-                    
-                </div>
-                <div class="search-container">
-                    
-                    
-                </div>
-                <div class="result-container">
-                    
-                </div>
-            </div>
-            
-        </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
     </body>
 </html>

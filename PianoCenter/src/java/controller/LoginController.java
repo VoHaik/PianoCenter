@@ -33,6 +33,7 @@ public class LoginController extends HttpServlet {
     }
     private boolean checkLogin(String username,String password){
         UserDTO user=getUser(username);
+        if(user==null){return false;}
         return user.getUserID().matches(username)&&user.getPassword().matches(password);
     }
     
