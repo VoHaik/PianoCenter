@@ -93,7 +93,7 @@
     <input type="reset" />
 </form>
 
-<form action="LoginPage.html">
+<form action="LoginPage.jsp">
     <input type="submit" value="LoginPage" />
 </form>
 

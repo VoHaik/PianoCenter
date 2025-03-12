@@ -5,48 +5,59 @@
  */
 package controller;
 
+import dao.UserDAO;
+import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author OS
  */
-public class MainController extends HttpServlet {
-    static final String loginPage="LoginPage.jsp";
-    static final String registerPage="RegisterPage.jsp";
-    static final String checkingController="CheckRegisterForm";
-    static final String loginController="LoginController";
-    static final String homePage="HomePage.jsp";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+public class LoginController extends HttpServlet {
+    private UserDTO getUser(String username){
+        ArrayList<UserDTO> users= (ArrayList<UserDTO>) new UserDAO().read(username);
+        if(users!=null){
+            for(UserDTO user: users){
+                if(user.getUserID().matches(username)){return user;}
+            }
+        }    
+        return null;
+    }
+    private boolean checkLogin(String username,String password){
+        UserDTO user=getUser(username);
+        return user.getUserID().matches(username)&&user.getPassword().matches(password);
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String action=request.getParameter("btAction");
+        String username=request.getParameter("txtUsername");
+        String password=request.getParameter("txtPassword");
         String url="";
         try{
-            if(url.isEmpty()){
-                if(action.matches("Login")){url=loginController;}
-                else if(action.matches("Register")){url=checkingController;}
-                RequestDispatcher rd= request.getRequestDispatcher(url);
-                rd.forward(request, response);
-            }else{out.println("Error With url");}
-        }catch(Exception e){e.printStackTrace();}
+            if(checkLogin(username, password)){
+               url=MainController.homePage;
+                HttpSession session= request.getSession();
+                session.setAttribute("username", username);
+            }
+            else{
+                url=MainController.loginPage;
+                request.setAttribute("invalidLogin", false);
+            }
+            RequestDispatcher rd= request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

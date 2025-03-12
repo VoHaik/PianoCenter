@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package registration;
+package dao;
 
 import dbutils.DBUtils;
+
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,4 +58,6 @@ public class RegistrationDAO implements Serializable{
         }
         return false;
     }
+    
+    
 }
