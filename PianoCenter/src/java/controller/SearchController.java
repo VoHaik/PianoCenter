@@ -52,7 +52,7 @@ public class SearchController extends HttpServlet {
         CourseDAO dao= new CourseDAO();
         
         int PageSize=5;
-        int PageNumber=(int)Math.ceil(dao.countRow(searchValue,category)/PageSize);
+        int PageNumber=(int)Math.ceil((double)dao.countRow(searchValue,category)/PageSize);
         request.setAttribute("PageNumber", PageNumber);
         out.print(PageNumber);
         out.print(dao.countRow(searchValue,category));
