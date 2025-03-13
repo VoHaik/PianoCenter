@@ -60,7 +60,7 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
         ArrayList<CourseDTO> courses= new ArrayList<>();
         String sql="SELECT * \n" +
 "FROM Courses \n" +
-"WHERE name like ? and status = 'Active' AND quantity > 0 and category like ?\n" +
+"WHERE name like ?  AND quantity > 0 and category like ?\n" +
 "ORDER BY createDate asc \n" +
 "OFFSET ? ROWS \n" +//OFFSET ở đây là số records sẽ được bỏ qua
 "FETCH NEXT ? ROWS ONLY;";// Trong khi đó fetch nó sẽ nạp số records tiếp theo sau khi được bỏ qua bởi offset
@@ -120,7 +120,48 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
 
     @Override
     public boolean update(CourseDTO entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection con=null;
+        ResultSet rs=null;
+        PreparedStatement stm= null;
+        String sql="update Courses set name=?, description=?,tuitionFee=?,startDate=?,category=?,createDate=?,status=?,quantity=?,lastUpdateUser=? \n" +
+"where courseID =?";
+        try {
+            con=dbutils.DBUtils.makeConnection();
+            stm=con.prepareStatement(sql);
+            stm.setString(1, entity.getName());
+            stm.setString(2, entity.getDescription());
+            stm.setBigDecimal(3, entity.getTutionFee());
+            stm.setDate(4, entity.getStartDate());
+            stm.setString(5, entity.getCategory());
+            stm.setDate(6, entity.getCreateDate());
+            stm.setString(7, entity.getStatus());
+            stm.setInt(8, entity.getQuantity());
+            stm.setString(9, entity.getLastUpdateUser());
+            stm.setInt(10, entity.getCourseID());
+            int row= stm.executeUpdate();
+            if(row>0){return true;}
+        } catch (Exception e) {
+        }finally{
+            if(con!=null){try {
+                con.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+            if(rs!=null){try {
+                rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+            if(stm!=null){try {
+                stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+        }
+        return false;
     }
 
     @Override

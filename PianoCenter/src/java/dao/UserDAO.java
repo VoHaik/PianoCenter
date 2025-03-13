@@ -77,7 +77,7 @@ public class UserDAO implements ICRUD<UserDTO, String>{
                     String email=rs.getString("email");
                     String role=rs.getString("role");
                     String phone=rs.getString("phone");
-                UserDTO user= new UserDTO(username, password, fullname, email, role, phone);
+                UserDTO user= new UserDTO(username, password, fullname, email, phone, role);
                 users.add(user);
                 }
                 return users;

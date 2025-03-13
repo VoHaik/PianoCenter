@@ -5,6 +5,9 @@
  */
 package utility;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
 /**
  *
  * @author OS
@@ -34,5 +37,26 @@ public class CheckRegisterForm {
         if(password.matches(regex)){return true;}
         else return false;
     }
-
+    public boolean checkDate(String date){
+        //Year-Month-Date trong đó year từ năm 1000 trở đi
+        String regex="^(1[0-9]{3}|2[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+        
+        if(!date.matches(regex)){return false;}
+        try {
+            Date validDate=Date.valueOf(date);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean checkDecimalNumber(String number){
+        String regex="^\\d{1,8}(\\.\\d{1,2})?$";
+        if(!number.matches(regex)){return false;}
+        try {
+            BigDecimal validNumber= new BigDecimal(number);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -35,7 +35,7 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url="";
+        String url=MainController.registerPage;
         String username=request.getParameter("txtUserRegister");
         String password=request.getParameter("txtPassRegister");
         String fullname=request.getParameter("txtFullNameRegister");
@@ -44,19 +44,14 @@ public class RegisterController extends HttpServlet {
         RegistrationDAO dao= new RegistrationDAO();
         boolean result=false;
         result=dao.registerAccount(username, password, fullname, email, phone);
-        out.println(result);
-//        try{
-//            
-//            
-//            if(result){
-//                url="RegisterSuccess.jsp";
-//            }else{
-//                url="InvalidPage.html";
-//            }
-//        }finally{
-//            RequestDispatcher rd= request.getRequestDispatcher(url);
-//            rd.forward(request, response);
-//        }
+        try{
+            if(result){
+                url=MainController.homePage;
+            }
+        }finally{
+            RequestDispatcher rd= request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

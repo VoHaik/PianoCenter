@@ -5,11 +5,8 @@
  */
 package controller;
 
-import dao.UserDAO;
-import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,49 +18,25 @@ import javax.servlet.http.HttpSession;
  *
  * @author OS
  */
-public class LoginController extends HttpServlet {
-    private UserDTO getUser(String username){
-        ArrayList<UserDTO> users= (ArrayList<UserDTO>) new UserDAO().read(username);
-        if(users!=null){
-            for(UserDTO user: users){
-                if(user.getUserID().matches(username)){return user;}
-            }
-        }    
-        return null;
-    }
-    private String checkLogin(String username,String password){
-        UserDTO user=getUser(username);
-        if(user==null){return null;}
-        if(user.getUserID().matches(username)&&user.getPassword().matches(password)){return user.getRole();}
-        return null;
-    }
+public class AuthorizationController extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String username=request.getParameter("txtUsername");
-        String password=request.getParameter("txtPassword");
-        String url;
-        HttpSession session= request.getSession();
-        String validateLogin= checkLogin(username, password);
-        session.setAttribute("role", validateLogin);
-        
+        String url=MainController.homePage;
+        HttpSession session =request.getSession();
         try{
-            if(validateLogin!=null){
-               url=MainController.authorizationController;
-               session.setAttribute("username", username);
-               session.setAttribute("invalidLogin", true);
-            }
-            else{
-                url=MainController.loginPage;
-                session.setAttribute("invalidLogin", false);
-            }
+        String role="Guest";
+        if(session.getAttribute("role")!=null){role=(String)session.getAttribute("role");}
+        if(role.equalsIgnoreCase("admin")){
+            url=MainController.homePageAdmin;
+        }else if(role.equalsIgnoreCase("user")||role.equalsIgnoreCase("guest")){
+            url=MainController.homePage;
+        }else if(role.isEmpty()){System.out.println("Your role is empty");}
             RequestDispatcher rd= request.getRequestDispatcher(url);
             rd.forward(request, response);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        }catch(Exception e){e.printStackTrace();}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

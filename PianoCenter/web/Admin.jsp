@@ -74,39 +74,83 @@
         <table border="1">
             <thead>
                 <tr>
-                    <!--<th>CourseID</th>-->
+                    <th>CourseID</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>TutionFee</th>
                     <th>StartDate</th>
                     <th>EndDate</th>
                     <th>Category</th>
-<!--                    <th>CreateDate</th>-->
-                    <!--<th>LastUpdateUser</th>-->
-                    <!--<th>Status</th>-->
+                    <th>CreateDate</th>
+                    <th>LastUpdateUser</th>
+                    <th>Status</th>
                     <th>Quantity</th>
+                    <th>Update</th>
                 </tr>
             </thead>
             <tbody>
             <%for(CourseDTO dto:courses){%>
-            <%if(dto.getStatus().equalsIgnoreCase("Active")){%>
-            <form>
+            
                 <tr>
-                    <!--<td><%=dto.getCourseID()%></td>-->
-                    <td><%=dto.getName()%></td>
-                    <td><%=dto.getDescription()%></td>
-                    <td><%=dto.getTutionFee()%></td>
-                    <td><%=dto.getStartDate()%></td>
-                    <td><%=dto.getEndDate()%></td>
-                    <td><%=dto.getCategory()%></td>
-                    <!--<td><%=dto.getCreateDate()%></td>-->
-                    <!--<td><%=dto.getLastUpdateUser()%></td>-->
-                    <!--<td><%=dto.getStatus()%></td>-->
-                    <td><%=dto.getQuantity()%></td>
+            <form action="MainController">
+                        <td>
+                            <%=dto.getCourseID()%>
+                            <input type="hidden" name="courseID" value="<%=dto.getCourseID()%>" />
+                        </td>
+                        <td>
+                            <input type="text" name="courseName" value="<%=dto.getName()%>" />
+                        </td>
+                        <td>
+                            <input type="text" name="des" value="<%=dto.getDescription()%>" />
+                        </td>
+                        <td>    
+                            <input type="text" name="tution" value="<%=dto.getTutionFee()%>" />
+                        </td>
+                        <td>
+                            <input type="text" name="startDate" value="<%=dto.getStartDate()%>" />
+                        </td>
+                        <td>
+                            <input type="text" name="endDate" value="<%=dto.getEndDate()%>" />
+                        </td>
+                        <td>
+                            
+                            <select name="updateCategory">
+                <option value="<%=dto.getCategory()%>"><%=dto.getCategory()%></option>
+                <%if(categories!=null){%>
+                    <%
+                        int i=0;
+                        for(String category: categories){
+                     %>
+                <option><%=category%></option>
+                    <%i++;}%>
+                <%}%>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="createDate" value="<%=dto.getCreateDate()%>" />
+                        </td>
+                        <td>
+                            <%=dto.getLastUpdateUser()%>
+                            <input type="hidden" name="lastUpdateUser" value="<%=username%>" />
+                        </td>
+                        <%if(dto.getStatus().equalsIgnoreCase("Active")){%>
+                        <td>
+                            <input type="checkbox" name="status" value="Active" checked="checked"/>
+                        </td>
+                        <%}else{%>
+                        <td>
+                            <input type="checkbox" name="status" value="Inactive" />
+                        </td>
+                        <%}%>
+                        <td>
+                            <input type="text" name="quantity" value="<%=dto.getQuantity()%>" />
+                        </td>
+                        <td><input type="submit" name="btAction" value="Update" /></td>    
+                        <input type="hidden" name="txtSearch" value="<%=""%>" />
+                        <input type="hidden" name="category" value="<%="All"%>" />
+                    </form>    
                 </tr>
-            </form>    
-                <%}%>
-                <%}%>
+                <%}%> 
             <%}else{%>
             <h1 style="color: red">No record found!!!</h1>
             <%}%>

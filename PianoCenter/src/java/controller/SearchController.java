@@ -47,7 +47,7 @@ public class SearchController extends HttpServlet {
         String category=request.getParameter("category");
         request.setAttribute("category", category);
         
-        String url=MainController.homePage;
+        String url=MainController.authorizationController;
         
         CourseDAO dao= new CourseDAO();
         

@@ -36,7 +36,7 @@ and open the template in the editor.
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Responsive Login Form HTML CSS | CodingNepal</title>
+  <title>LoginPage</title>
   <link rel="stylesheet" href="style.css" />
   <!-- Font Awesome CDN link for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
