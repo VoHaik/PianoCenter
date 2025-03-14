@@ -115,6 +115,6 @@
             <%for(int i=1;i<=pageNumber;i++){%>
             <a href="SearchController?currentPage=<%=i%>&&txtSearch=<%=lastSearchValue%>&&category=<%=lastCategory%>"><%=i%></a>
             <%}%>
-    <%}%>    
+            <%} else{%> <%response.sendRedirect("MainController?txtSearch=&&btAction=Search&&category=All"); }%>    
     </body>
 </html>

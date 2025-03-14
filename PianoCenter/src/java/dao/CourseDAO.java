@@ -6,6 +6,7 @@
 package dao;
 
 import crud.ICRUD;
+import dbutils.DBUtils;
 import dto.CourseDTO;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -47,9 +48,34 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
         return numberOfRecords;
     }
 
-    @Override
-    public boolean create(CourseDTO entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean create(String name, String description, BigDecimal tuitionFee, 
+                         Date startDate, Date endDate, String category, String status, int quantity, 
+                         String lastUpdateUser) throws ClassNotFoundException, SQLException{
+        
+        Connection con = DBUtils.makeConnection();
+        PreparedStatement stm = null;
+    
+    try {
+        String sql = "INSERT INTO Courses (name, image, description, tuitionFee, startDate, endDate, category, status, quantity, lastUpdateUser) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        stm = con.prepareStatement(sql);
+        stm.setString(1, name);
+        stm.setString(2, null);
+        stm.setString(3, description);
+        stm.setBigDecimal(4, tuitionFee);
+        stm.setDate(5, startDate); // Dùng java.sql.Date
+        stm.setDate(6, endDate);   // Dùng java.sql.Date
+        stm.setString(7, category);
+        stm.setString(8, status);
+        stm.setInt(9, quantity);
+        stm.setString(10, lastUpdateUser);
+
+        int row = stm.executeUpdate();
+        return row > 0;
+    } finally {
+        if (stm != null) stm.close();
+        if (con != null) con.close();
+    }
     }
 
     
@@ -191,6 +217,11 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
 
     @Override
     public List<CourseDTO> read(String String) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean create(CourseDTO entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

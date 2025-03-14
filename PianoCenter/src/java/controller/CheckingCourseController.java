@@ -5,31 +5,24 @@
  */
 package controller;
 
+import dao.CourseDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import utility.CheckCourseForm;
 
 /**
  *
- * @author OS
+ * @author dinh
  */
-public class MainController extends HttpServlet {
-    static final String loginPage="LoginPage.jsp";
-    static final String registerPage="RegisterPage.jsp";
-    static final String checkingController="CheckRegisterForm";
-    static final String loginController="LoginController";
-    static final String homePage="HomePage.jsp";
-    static final String searchController="SearchController";
-    static final String logoutController="LogoutController";
-    static final String authorizationController="AuthorizationController";
-    static final String homePageAdmin="Admin.jsp";
-    static final String updateController="UpdateController";
-    static final String createCoursePage="createCoursePage.jsp";
-    static final String checkingCourseController="CheckingCourseController";
+public class CheckingCourseController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,21 +36,46 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        String action=request.getParameter("btAction");
-        String url="";
-        try{
-            if(url.isEmpty()){
-                if(action.matches("Login")){url=loginController;}
-                else if(action.equals("Register")){url=checkingController;}
-                else if(action.equals("Search")){url=searchController;}
-                else if(action.equals("Logout")){url=logoutController;}
-                else if(action.equals("Update")){url=updateController;}
-                else if(action.equals("createCourse")) {url=checkingCourseController;}
-                RequestDispatcher rd= request.getRequestDispatcher(url);
-                rd.forward(request, response);
-            }else{out.println("Error With url");}
-        }catch(Exception e){e.printStackTrace();}
+        String url = "createCoursePage.jsp";
+        
+        try {
+            String name = request.getParameter("txtCourseName");
+            String image = request.getParameter("txtCourseImage");
+            String description = request.getParameter("txtCourseDescription");
+            String tuitionFee = request.getParameter("txtTuitionFee");
+            String startDate = request.getParameter("txtStartDate");
+            String endDate = request.getParameter("txtEndDate");
+            String category = request.getParameter("txtCategory");
+            String status = request.getParameter("txtStatus");
+            int quantity = Integer.parseInt(request.getParameter("txtQuantity"));
+            
+            CheckCourseForm checking = new CheckCourseForm();
+            CourseDAO dao = new CourseDAO();
+
+            boolean error1 = checking.checkName(name);
+            boolean error3 = checking.checkDescription(description);
+            boolean error4 = checking.checkTuitionFee(tuitionFee);
+            boolean error5 = checking.checkDates(startDate, endDate);
+            boolean error6 = checking.checkCategory(category);
+            boolean error7 = checking.checkStatus(status);
+            boolean error8 = checking.checkQuantity(quantity);
+
+            request.setAttribute("invalidName", error1);
+            request.setAttribute("invalidDescription", error3);
+            request.setAttribute("invalidTuitionFee", error4);
+            request.setAttribute("invalidDates", error5);
+            request.setAttribute("invalidCategory", error6);
+            request.setAttribute("invalidStatus", error7);
+            request.setAttribute("invalidQuantity", error8);
+
+            if (error1 && error3 && error4 && error5 && error6 && error7 && error8) {
+                url = "CreateCourseController";
+            }
+
+        } finally {
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -27,7 +27,7 @@
 //        Integer pageNumber= 5;
     %>
     
-    
+    11111
     
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -58,6 +58,8 @@
                 <%}%>
             </select>
         </form>
+            <br>
+            <a href="createCoursePage.jsp">Add new Course</a>
         <br>
         <%if(username!=null){%>
         <form action="MainController">
@@ -163,6 +165,6 @@
             <%for(int i=1;i<=pageNumber;i++){%>
             <a href="SearchController?currentPage=<%=i%>&&txtSearch=<%=lastSearchValue%>&&category=<%=lastCategory%>"><%=i%></a>
             <%}%>
-    <%}%>    
+    <%} else{%> <%response.sendRedirect("MainController?txtSearch=&&btAction=Search&&category=All"); }%>    
     </body>
 </html>
