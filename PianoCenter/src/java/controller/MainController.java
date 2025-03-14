@@ -30,6 +30,7 @@ public class MainController extends HttpServlet {
     static final String updateController="UpdateController";
     static final String createCoursePage="createCoursePage.jsp";
     static final String checkingCourseController="CheckingCourseController";
+    static final String addToCartController="AddToCartController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,6 +55,7 @@ public class MainController extends HttpServlet {
                 else if(action.equals("Logout")){url=logoutController;}
                 else if(action.equals("Update")){url=updateController;}
                 else if(action.equals("createCourse")) {url=checkingCourseController;}
+                else if(action.equals("Add to cart")) {url=addToCartController;}
                 RequestDispatcher rd= request.getRequestDispatcher(url);
                 rd.forward(request, response);
             }else{out.println("Error With url");}

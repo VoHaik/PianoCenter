@@ -25,12 +25,15 @@ import java.util.logging.Logger;
  */
 public class CourseDAO implements ICRUD<CourseDTO, String>{
     
-    public int countRow(String searchValue,String category) throws ClassNotFoundException, SQLException{
+    public int countRow(String searchValue,String category, String role) throws ClassNotFoundException, SQLException{
         int numberOfRecords=0;
         Connection con=dbutils.DBUtils.makeConnection();
         ResultSet rs= null;
         PreparedStatement stm=null;
-        String sql="SELECT COUNT(courseID) AS totalCourses FROM Courses where name like ? and category like ?  and status = 'Active' AND quantity > 0";
+        String sql;
+        if(role==null) sql="SELECT COUNT(courseID) AS totalCourses FROM Courses where name like ? and category like ?  and status = 'Active' AND quantity > 0";
+        else if (role.equalsIgnoreCase("Admin")) { sql="SELECT COUNT(courseID) AS totalCourses FROM Courses where name like ? and category like ?  and status = 'Active'";}
+                else sql="SELECT COUNT(courseID) AS totalCourses FROM Courses where name like ? and category like ?  and status = 'Active' AND quantity > 0";
         try {
             stm=con.prepareStatement(sql);
             stm.setString(1, "%"+searchValue+"%");

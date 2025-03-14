@@ -90,8 +90,11 @@
             <tbody>
             <%for(CourseDTO dto:courses){%>
             <%if(dto.getStatus().equalsIgnoreCase("Active")){%>
-            <form>
+            <form action="MainController">
                 <tr>
+                       <%
+                           session.setAttribute("course", dto);
+                       %>
                     <!--<td><%=dto.getCourseID()%></td>-->
                     <td><%=dto.getName()%></td>
                     <td><%=dto.getDescription()%></td>
@@ -103,6 +106,7 @@
                     <!--<td><%=dto.getLastUpdateUser()%></td>-->
                     <!--<td><%=dto.getStatus()%></td>-->
                     <td><%=dto.getQuantity()%></td>
+                    <td> <input type="submit" name="btAction" value="Add to cart" /> </td>
                 </tr>
             </form>    
                 <%}%>
