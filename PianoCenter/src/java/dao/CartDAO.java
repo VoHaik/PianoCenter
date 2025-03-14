@@ -50,7 +50,6 @@ public class CartDAO implements ICRUD<CartDTO, String> {
             stm=con.prepareStatement(sql);
             stm.setString(1, entity.getUserID());
             stm.setInt(2, entity.getCourseID());
-            rs=stm.executeQuery();
 //            System.out.println(rs);
             int row = stm.executeUpdate();
             return row > 0;
@@ -68,7 +67,6 @@ public class CartDAO implements ICRUD<CartDTO, String> {
             stm.setString(2, entity.getUserID());
             stm.setInt(3, entity.getCourseID());
             stm.setInt(1, entity.getQuantity());
-            rs=stm.executeQuery();
 //            System.out.println(rs);
             int row = stm.executeUpdate();
             return row > 0;
