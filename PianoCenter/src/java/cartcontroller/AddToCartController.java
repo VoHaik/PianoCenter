@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package cartcontroller;
 
-import dao.UserDAO;
-import dto.UserDTO;
+import dao.CartDAO;
+import dto.CartDTO;
+import dto.CourseDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,50 +19,41 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author OS
+ * @author dinh
  */
-public class LoginController extends HttpServlet {
-    private UserDTO getUser(String username){
-        ArrayList<UserDTO> users= (ArrayList<UserDTO>) new UserDAO().read(username);
-        if(users!=null){
-            for(UserDTO user: users){
-                if(user.getUserID().matches(username)){return user;}
-            }
-        }    
-        return null;
-    }
-    private String checkLogin(String username,String password){
-        UserDTO user=getUser(username);
-        if(user==null){return null;}
-        if(user.getUserID().matches(username)&&user.getPassword().matches(password)){return user.getRole();}
-        return null;
-    }
-    
+public class AddToCartController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        String username=request.getParameter("txtUsername");
-        String password=request.getParameter("txtPassword");
-        String url;
-        HttpSession session= request.getSession();
-        String validateLogin= checkLogin(username, password); 
-        session.setAttribute("role", validateLogin);
-        
-        try{
-            if(validateLogin!=null){
-               url=MainController.authorizationController;
-               session.setAttribute("username", username);
-               session.setAttribute("invalidLogin", true);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            String url="HomePage.jsp";
+            CartDTO cart= new CartDTO();
+            HttpSession session = request.getSession();
+            CourseDTO course = (CourseDTO)session.getAttribute("course");
+            String username= (String)session.getAttribute("username");
+            cart.setUserID(username);
+            cart.setCourseID(course.getCourseID());
+            cart.setQuantity(1);
+            try {
+                CartDAO dao = new CartDAO();
+                boolean result=dao.createCart(cart);
+                RequestDispatcher rd= request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            else{
-                url=MainController.loginPage;
-                session.setAttribute("invalidLogin", false);
-            }
-            RequestDispatcher rd= request.getRequestDispatcher(url);
-            rd.forward(request, response);
-        }catch(Exception e){
-            e.printStackTrace();
+            
         }
     }
 

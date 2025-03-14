@@ -40,6 +40,10 @@
         <servlet-name>CreateCourseController</servlet-name>
         <servlet-class>controller.CreateCourseController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddToCartController</servlet-name>
+        <servlet-class>cartcontroller.AddToCartController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -84,6 +88,10 @@
     <servlet-mapping>
         <servlet-name>CreateCourseController</servlet-name>
         <url-pattern>/CreateCourseController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartController</servlet-name>
+        <url-pattern>/AddToCartController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
