@@ -10,6 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    
     <%
         String username=(String)session.getAttribute("username");
         ArrayList<CourseDTO> courses= (ArrayList<CourseDTO>)request.getAttribute("courses");
