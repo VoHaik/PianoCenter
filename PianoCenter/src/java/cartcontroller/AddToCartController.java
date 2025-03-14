@@ -40,10 +40,10 @@ public class AddToCartController extends HttpServlet {
             String url="HomePage.jsp";
             CartDTO cart= new CartDTO();
             HttpSession session = request.getSession();
-            CourseDTO course = (CourseDTO)session.getAttribute("course");
+            Integer courseID = Integer.parseInt(request.getParameter("courseID"));
             String username= (String)session.getAttribute("username");
             cart.setUserID(username);
-            cart.setCourseID(course.getCourseID());
+            cart.setCourseID(courseID);
             cart.setQuantity(1);
             try {
                 CartDAO dao = new CartDAO();

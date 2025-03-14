@@ -93,8 +93,9 @@
             <form action="MainController">
                 <tr>
                        <%
-                           session.setAttribute("course", dto);
+                           
                        %>
+                <input type="hidden" name="courseID" value="<%=dto.getCourseID()%>" />
                     <!--<td><%=dto.getCourseID()%></td>-->
                     <td><%=dto.getName()%></td>
                     <td><%=dto.getDescription()%></td>
