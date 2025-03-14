@@ -54,12 +54,13 @@ public class SearchController extends HttpServlet {
         int PageSize=5;
         int PageNumber=(int)Math.ceil((double)dao.countRow(searchValue,category)/PageSize);
         request.setAttribute("PageNumber", PageNumber);
-        out.print(PageNumber);
-        out.print(dao.countRow(searchValue,category));
+//        out.print(PageNumber);
+//        out.print(dao.countRow(searchValue,category));
         
         
         Integer currentPage=1;
         if(request.getParameter("currentPage")!=null){currentPage=Integer.parseInt(request.getParameter("currentPage"));}
+        request.setAttribute("lastCurrentPage", currentPage);
         
         Integer OFFSET=(currentPage-1)*PageSize;
         

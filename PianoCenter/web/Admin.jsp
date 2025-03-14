@@ -20,6 +20,8 @@
         if(request.getParameter("txtSearch")!=null){lastSearchValue=(String)request.getParameter("txtSearch");}
         String lastCategory="All";
         if(request.getParameter("category")!=null){lastCategory=(String)request.getParameter("category");}
+        Integer lastCurrentPage=1;
+        if(request.getAttribute("lastCurrentPage")!=null){lastCurrentPage=(Integer)request.getAttribute("lastCurrentPage");}
         
 //        Integer pageNumber= 5;
     %>
@@ -148,6 +150,7 @@
                         <td><input type="submit" name="btAction" value="Update" /></td>    
                         <input type="hidden" name="txtSearch" value="<%=""%>" />
                         <input type="hidden" name="category" value="<%="All"%>" />
+                        <input type="hidden" name="currentPage" value="<%=lastCurrentPage%>" />
                     </form>    
                 </tr>
                 <%}%> 
