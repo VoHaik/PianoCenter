@@ -5,9 +5,12 @@
  */
 package dbutils;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,15 +19,19 @@ import java.sql.SQLException;
 public class DBUtils {
     public static Connection makeConnection() throws ClassNotFoundException{
         Connection con=null;
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String url="jdbc:sqlserver://VoDongDucKhai\\SQLEXPRESS:1433;databaseName=ttk_piano_db";
-            String username="sa";
-            String password="12345";
-            con=DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            SQLServerDataSource ds = new SQLServerDataSource();
+            ds.setUser("sa");
+            ds.setPassword("123456");
+            ds.setServerName("Jarvis\\SQLEXPRESS");
+            ds.setPortNumber(1433);
+            ds.setDatabaseName("ttk_piano_db");
+            ds.setEncrypt(false);  // Tắt SSL encryption
+        ds.setTrustServerCertificate(true);
+            try 
+            { con = ds.getConnection();}
+            catch (SQLException e) {
+            Logger.getLogger(DBUtils.class.getName()).log(Level.SEVERE, null, e);
         }
-        return con;
+            return con;
     } 
 }

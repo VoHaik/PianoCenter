@@ -32,6 +32,14 @@
         <servlet-name>UpdateController</servlet-name>
         <servlet-class>controller.UpdateController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckingCourseController</servlet-name>
+        <servlet-class>controller.CheckingCourseController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCourseController</servlet-name>
+        <servlet-class>controller.CreateCourseController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -68,6 +76,14 @@
     <servlet-mapping>
         <servlet-name>UpdateController</servlet-name>
         <url-pattern>/UpdateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckingCourseController</servlet-name>
+        <url-pattern>/CheckingCourseController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCourseController</servlet-name>
+        <url-pattern>/CreateCourseController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
