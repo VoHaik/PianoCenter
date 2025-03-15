@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.*;
 
 /**
  *
@@ -33,6 +34,13 @@ public class AddToCartController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private List<CartDTO> getUserCart(CartDAO dao,String userID){
+        ArrayList<CartDTO> carts=new ArrayList<>();
+        if(dao.read(userID)!=null){
+            carts= (ArrayList<CartDTO>)dao.read(userID);
+        }
+        return carts;
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,8 +50,9 @@ public class AddToCartController extends HttpServlet {
             CartDTO cart= new CartDTO();
             HttpSession session = request.getSession();
             Integer courseID = Integer.parseInt(request.getParameter("courseID"));
-            String username= (String)session.getAttribute("username");
-            cart.setUserID(username);
+            String userID= (String)session.getAttribute("username");
+            if(userID==null){userID="Guest";}
+            cart.setUserID(userID);
             cart.setCourseID(courseID);
             cart.setQuantity(1);
             boolean result=false;
@@ -51,6 +60,7 @@ public class AddToCartController extends HttpServlet {
                 CartDAO dao= new CartDAO();
                 result=dao.createCart(cart);
                 if(result){
+                    session.setAttribute("cartUser", getUserCart(dao, userID));
                     RequestDispatcher rd= request.getRequestDispatcher(url);
                     rd.forward(request, response);
                 }else{out.print("Your cart was no created correctly");}

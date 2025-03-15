@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author OS
  */
-public class CourseDAO implements ICRUD<CourseDTO, String>{
+public class CourseDAO implements ICRUD<CourseDTO, Integer>{
     
     public int countRow(String searchValue,String category, String role) throws ClassNotFoundException, SQLException{
         int numberOfRecords=0;
@@ -192,7 +192,41 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
         }
         return false;
     }
-
+    public boolean updateQuantity(int quantity,int courseID) {
+        Connection con=null;
+        ResultSet rs=null;
+        PreparedStatement stm= null;
+        String sql="update Courses set quantity=? where courseID =?";
+        try {
+            con=dbutils.DBUtils.makeConnection();
+            stm=con.prepareStatement(sql);
+            stm.setString(1, String.valueOf(quantity));
+            stm.setString(2, String.valueOf(courseID));
+            int row= stm.executeUpdate();
+            if(row>0){return true;}
+        } catch (Exception e) {
+        }finally{
+            if(con!=null){try {
+                con.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+            if(rs!=null){try {
+                rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+            if(stm!=null){try {
+                stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+        }
+        return false;
+    }
     @Override
     public boolean delete(CourseDTO entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -219,15 +253,139 @@ public class CourseDAO implements ICRUD<CourseDTO, String>{
     }
 
     @Override
-    public List<CourseDTO> read(String String) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public boolean create(CourseDTO entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
+//    public CourseDTO read(String value, String column) {
+//       CourseDTO courseDTO=null;
+//       Connection con=null;
+//       PreparedStatement stm=null;
+//       ResultSet rs=null;
+//       String sql="select * from Courses where "+column+" =?";
+//        try {
+//            con=dbutils.DBUtils.makeConnection();
+//            stm=con.prepareStatement(sql);
+//            stm.setString(1, value);
+//            rs=stm.executeQuery();
+//            
+//                if(rs.next()){
+//                    int courseID=rs.getInt("courseID");
+//                    String name=rs.getString("name");
+//                    String description=rs.getString("description");
+//                    BigDecimal tutionFee=rs.getBigDecimal("tuitionFee");
+//                    Date startDate=rs.getDate("startDate");
+//                    Date endDate=rs.getDate("endDate");
+//                    String category=rs.getString("category");
+//                    Date createDate=rs.getDate("createDate");
+//                    String lastUpdateUser=rs.getString("lastUpdateUser");
+//                    String status=rs.getString("status");
+//                    int quantity=rs.getInt("quantity");
+//                    courseDTO= new CourseDTO(courseID, name, description, tutionFee, startDate, endDate, category, createDate, lastUpdateUser, status, quantity);
+//                }
+//        } catch (Exception e) {}
+//        finally{
+//            if(con!=null){try {
+//                con.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//}
+//            if(rs!=null){try {
+//                rs.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//}
+//            if(stm!=null){try {
+//                stm.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//}
+//        }
+//        return courseDTO;
+//    }
+
+    @Override
+    public List<CourseDTO> read(Integer courseID) {
+        ArrayList<CourseDTO> courseDTOs= new ArrayList<>();
+        Connection con = null;
+        ResultSet rs= null;
+        PreparedStatement stm= null;
+        String sql="select * from Courses where courseID = ?";
+        try {
+            con=dbutils.DBUtils.makeConnection();
+            stm=con.prepareStatement(sql);
+            stm.setString(1, String.valueOf(courseID));
+            rs=stm.executeQuery(sql);
+            while(rs.next()){
+                    int CourseID=rs.getInt("courseID");
+                    String name=rs.getString("name");
+                    String description=rs.getString("description");
+                    BigDecimal tutionFee=rs.getBigDecimal("tuitionFee");
+                    Date startDate=rs.getDate("startDate");
+                    Date endDate=rs.getDate("endDate");
+                    String category=rs.getString("category");
+                    Date createDate=rs.getDate("createDate");
+                    String lastUpdateUser=rs.getString("lastUpdateUser");
+                    String status=rs.getString("status");
+                    int quantity=rs.getInt("quantity");
+                    CourseDTO course= new CourseDTO(CourseID, name, description, tutionFee, startDate, endDate, category, createDate, lastUpdateUser, status, quantity);
+                    courseDTOs.add(course);
+                }
+                return courseDTOs;
+        } catch (Exception e) {}
+        finally{
+            if(con!=null){try {
+                con.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+            if(stm!=null){try {
+                stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+            if(rs!=null){try {
+                rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
+        }
+        return null;
+    }
+    public CourseDTO getCourse(int courseID){
+        Connection con =null;
+        ResultSet rs=null;
+        PreparedStatement stm=null;
+        String sql="select * from Courses where courseID = ?";
+        try {
+            con=dbutils.DBUtils.makeConnection();
+            stm=con.prepareStatement(sql);
+            stm.setString(1, String.valueOf(courseID));
+            rs=stm.executeQuery();
+            if(rs.next()){
+                int CourseID=rs.getInt("courseID");
+                    String name=rs.getString("name");
+                    String description=rs.getString("description");
+                    BigDecimal tutionFee=rs.getBigDecimal("tuitionFee");
+                    Date startDate=rs.getDate("startDate");
+                    Date endDate=rs.getDate("endDate");
+                    String category=rs.getString("category");
+                    Date createDate=rs.getDate("createDate");
+                    String lastUpdateUser=rs.getString("lastUpdateUser");
+                    String status=rs.getString("status");
+                    int quantity=rs.getInt("quantity");
+                    CourseDTO course= new CourseDTO(CourseID, name, description, tutionFee, startDate, endDate, category, createDate, lastUpdateUser, status, quantity);;
+                    return course;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
     
 }

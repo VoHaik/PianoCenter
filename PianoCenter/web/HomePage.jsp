@@ -69,7 +69,8 @@
         <br><br>
         <%}%>
         <br><br>
-
+        <a href="ViewCart.jsp">View your cart at here</a>
+        <br><br>
     <%if(courses!=null){%>
         <%if(!courses.isEmpty()){%>
         <table border="1">

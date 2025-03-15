@@ -15,6 +15,7 @@ import java.util.*;
 public interface ICRUD<E,K> {
     boolean create(E entity);
     List<E> read(K String);
+    
     boolean update(E entity);
     boolean delete(E entity);
 }

@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,6 +32,9 @@ public class MainController extends HttpServlet {
     public static final String createCoursePage="createCoursePage.jsp";
     public static final String checkingCourseController="CheckingCourseController";
     public static final String addToCartController="AddToCartController";
+    public static final String validateCartController="ValidateCart";
+    public static final String viewCart="ViewCart.jsp";
+    public static final String updateCartController="UpdateCart";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,6 +51,7 @@ public class MainController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String action=request.getParameter("btAction");
         String url="";
+        HttpSession session= request.getSession();
         try{
             if(url.isEmpty()){
                 if(action.matches("Login")){url=loginController;}
@@ -55,7 +60,13 @@ public class MainController extends HttpServlet {
                 else if(action.equals("Logout")){url=logoutController;}
                 else if(action.equals("Update")){url=updateController;}
                 else if(action.equals("createCourse")) {url=checkingCourseController;}
-                else if(action.equals("Add to cart")) {url=addToCartController;}
+                else if(action.equals("Add to cart")) {
+                    if(session.getAttribute("username")==null){
+                        url=registerPage;
+                    }else{url=addToCartController;}
+                }
+                else if(action.equals("Booking")) {url=validateCartController;}
+                else if(action.equals("updateCart")) {url=updateCartController;}
                 RequestDispatcher rd= request.getRequestDispatcher(url);
                 rd.forward(request, response);
             }else{out.println("Error With url");}
