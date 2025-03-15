@@ -52,6 +52,10 @@
         <servlet-name>UpdateCart</servlet-name>
         <servlet-class>cartcontroller.UpdateCart</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteCart</servlet-name>
+        <servlet-class>cartcontroller.DeleteCart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -108,6 +112,10 @@
     <servlet-mapping>
         <servlet-name>UpdateCart</servlet-name>
         <url-pattern>/UpdateCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCart</servlet-name>
+        <url-pattern>/DeleteCart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

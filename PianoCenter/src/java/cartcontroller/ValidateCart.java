@@ -79,6 +79,12 @@ public class ValidateCart extends HttpServlet {
         PrintWriter out = response.getWriter();
         CourseDAO dao = new CourseDAO();
         String cartIDs[]= request.getParameterValues("selectedCarts");
+         if (cartIDs == null || cartIDs.length == 0) {
+            request.setAttribute("error", "No courses selected.");
+            request.getRequestDispatcher(MainController.viewCart).forward(request, response);
+            return;
+        }
+
         ArrayList<Integer> cartIDList= convertStringToInt(cartIDs);
         ArrayList<CartDTO> carts= getCarts(cartIDList);
         ArrayList<CourseDTO> courses= getCourseInCart(carts);
