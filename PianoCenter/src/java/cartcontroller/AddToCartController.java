@@ -5,6 +5,7 @@
  */
 package cartcontroller;
 
+import controller.MainController;
 import dao.CartDAO;
 import dto.CartDTO;
 import dto.CourseDTO;
@@ -37,7 +38,7 @@ public class AddToCartController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String url="HomePage.jsp";
+            String url=MainController.searchController;
             CartDTO cart= new CartDTO();
             HttpSession session = request.getSession();
             Integer courseID = Integer.parseInt(request.getParameter("courseID"));
@@ -45,11 +46,14 @@ public class AddToCartController extends HttpServlet {
             cart.setUserID(username);
             cart.setCourseID(courseID);
             cart.setQuantity(1);
+            boolean result=false;
             try {
-                CartDAO dao = new CartDAO();
-                boolean result=dao.createCart(cart);
-                RequestDispatcher rd= request.getRequestDispatcher(url);
-                rd.forward(request, response);
+                CartDAO dao= new CartDAO();
+                result=dao.createCart(cart);
+                if(result){
+                    RequestDispatcher rd= request.getRequestDispatcher(url);
+                    rd.forward(request, response);
+                }else{out.print("Your cart was no created correctly");}
             } catch (Exception e) {
                 e.printStackTrace();
             }

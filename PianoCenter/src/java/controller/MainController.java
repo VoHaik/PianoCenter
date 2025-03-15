@@ -18,19 +18,19 @@ import javax.servlet.http.HttpServletResponse;
  * @author OS
  */
 public class MainController extends HttpServlet {
-    static final String loginPage="LoginPage.jsp";
-    static final String registerPage="RegisterPage.jsp";
-    static final String checkingController="CheckRegisterForm";
-    static final String loginController="LoginController";
-    static final String homePage="HomePage.jsp";
-    static final String searchController="SearchController";
-    static final String logoutController="LogoutController";
-    static final String authorizationController="AuthorizationController";
-    static final String homePageAdmin="Admin.jsp";
-    static final String updateController="UpdateController";
-    static final String createCoursePage="createCoursePage.jsp";
-    static final String checkingCourseController="CheckingCourseController";
-    static final String addToCartController="AddToCartController";
+    public static final String loginPage="LoginPage.jsp";
+    public static final String registerPage="RegisterPage.jsp";
+    public static final String checkingController="CheckRegisterForm";
+    public static final String loginController="LoginController";
+    public static final String homePage="HomePage.jsp";
+    public static final String searchController="SearchController";
+    public static final String logoutController="LogoutController";
+    public static final String authorizationController="AuthorizationController";
+    public static final String homePageAdmin="Admin.jsp";
+    public static final String updateController="UpdateController";
+    public static final String createCoursePage="createCoursePage.jsp";
+    public static final String checkingCourseController="CheckingCourseController";
+    public static final String addToCartController="AddToCartController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

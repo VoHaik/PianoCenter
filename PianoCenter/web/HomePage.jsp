@@ -20,8 +20,9 @@
         if(request.getParameter("txtSearch")!=null){lastSearchValue=(String)request.getParameter("txtSearch");}
         String lastCategory="All";
         if(request.getParameter("category")!=null){lastCategory=(String)request.getParameter("category");}
-        
-//        Integer pageNumber= 5;
+        Integer lastCurrentPage=1;
+        if(request.getAttribute("lastCurrentPage")!=null){lastCurrentPage=(Integer)request.getAttribute("lastCurrentPage");}
+
     %>
     
     
@@ -92,9 +93,6 @@
             <%if(dto.getStatus().equalsIgnoreCase("Active")){%>
             <form action="MainController">
                 <tr>
-                       <%
-                           
-                       %>
                 <input type="hidden" name="courseID" value="<%=dto.getCourseID()%>" />
                     <!--<td><%=dto.getCourseID()%></td>-->
                     <td><%=dto.getName()%></td>
@@ -107,7 +105,10 @@
                     <!--<td><%=dto.getLastUpdateUser()%></td>-->
                     <!--<td><%=dto.getStatus()%></td>-->
                     <td><%=dto.getQuantity()%></td>
-                    <td> <input type="submit" name="btAction" value="Add to cart" /> </td>
+                    <input type="hidden" name="txtSearch" value="<%=""%>" />
+                        <input type="hidden" name="category" value="<%="All"%>" />
+                        <input type="hidden" name="currentPage" value="<%=lastCurrentPage%>" />
+                    <td> <input type="submit" name="btAction" value="Add to cart" /> </td>  
                 </tr>
             </form>    
                 <%}%>
