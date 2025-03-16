@@ -56,6 +56,11 @@ public class DeleteCart extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
            String url = MainController.viewCart;
            String cartIDs []= request.getParameterValues("selectedCarts");
+           if (cartIDs == null || cartIDs.length == 0) {
+            request.setAttribute("error", "No courses selected.");
+            request.getRequestDispatcher(MainController.viewCart).forward(request, response);
+            return;
+            }
            ArrayList<Integer> cartIDList =convertStringToInt(cartIDs);
            ArrayList<CartDTO> carts= getCarts(cartIDList);
            
