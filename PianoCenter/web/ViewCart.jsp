@@ -48,8 +48,10 @@
             </thead>
             <tbody>
                 
-                <%for(CartDTO cart:carts){%>
+                <%for(CartDTO cart:carts){%> 
+                
                 <%
+                    
                     BigDecimal quantity= BigDecimal.valueOf(cart.getQuantity());
                     BigDecimal tutionFee= dao.getCourse(cart.getCourseID()).getTutionFee();
                     BigDecimal total = tutionFee.multiply(quantity);
@@ -62,24 +64,43 @@
                     
                     <td><%=dao.getCourse(cart.getCourseID()).getName()%></td>
                     <td><%=dao.getCourse(cart.getCourseID()).getTutionFee()%></td>
-                    <td>
+                    
                         <form action="MainController?from=refreshForError">
+                            <td>
                             <input type="text" name="currentQuantity" value="<%=cart.getQuantity()%>"/>
-                            <input type="submit" style="display: none" name="btAction" value="updateCart" />
+                            <input type="submit"  name="btAction" value="updateCart" />
                             <input type="hidden" name="currentCartID" value="<%=cart.getCartID()%>" />
-                            
+                            <input type="submit" value="DeleteCart" name="btAction" />
+                            </td>
+                   
+                        
+                    
                         </form>
-                    </td>
+                    
                     <td><%=total%></td>
                     <td><input type="checkbox" name="selectedCarts" value="<%=cart.getCartID()%>" /></td>
                     <%if(errorCode!=null){%>
                     <td><span style="color: red"><%=errorCode%></span></td>
                     <%}%>
+
                 </tr>
+                <%}%>
+                <%String error = (String)request.getAttribute("error");
+                if (error!=null){
+                %>
+                <tr>
+                    <td colspan="3">
+                            <span style="font-family: fantasy;color: red"><%=error%></span>
+                            
+                        </td>
+
+                </tr>
+                
+
                 <%}%>
                 <tr>
                         <td colspan="1">
-                            <span style="font-family: fantasy;color: #12876f">MONEY NEED TO PAY IS</span>
+                            <span style="font-family: fantasy;color: #12876f">TOTAL CART MONEY</span>
                             
                         </td>
                         <td colspan="2">

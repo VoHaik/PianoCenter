@@ -21,8 +21,8 @@ public class DBUtils {
         Connection con=null;
             SQLServerDataSource ds = new SQLServerDataSource();
             ds.setUser("sa");
-            ds.setPassword("12345");
-            ds.setServerName("VoDongDucKhai\\SQLEXPRESS");
+             ds.setPassword("123456");
+            ds.setServerName("Jarvis\\SQLEXPRESS");
             ds.setPortNumber(1433);
             ds.setDatabaseName("ttk_piano_db");
             ds.setEncrypt(false);  // Tắt SSL encryption
