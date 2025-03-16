@@ -10,6 +10,7 @@ import dao.CartDAO;
 import dto.CartDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,32 +23,46 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteCart extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private  ArrayList<Integer> convertStringToInt(String[] cartIDs){
+        ArrayList<Integer> cartIDList= new ArrayList<>();
+        for(String id: cartIDs){
+            cartIDList.add(Integer.parseInt(id));
+        }
+        return cartIDList;
+    }
+    private ArrayList<CartDTO> getCarts(ArrayList<Integer> cartIDList){
+        CartDAO dAO= new CartDAO();
+        ArrayList<CartDTO> carts= new ArrayList<>();
+        for(Integer id: cartIDList){
+            CartDTO cart = dAO.getCart(String.valueOf(id));
+            if(cart!=null){carts.add(cart);}
+        }
+        return carts;
+    }
+    private boolean deleteCarts(ArrayList<CartDTO> carts){
+        boolean check=false;
+        CartDAO dao= new CartDAO();
+        if(carts!=null){
+            for(CartDTO cart:carts){
+                dao.delete(cart);
+                check=true;
+            }
+        }
+        return check;
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String url = "ViewCart.jsp";
-           String cartID = (String)request.getParameter("currentCartID");
-           CartDAO cartDAO= new CartDAO();
-           CartDTO cart = new CartDTO();
-           cart=cartDAO.getCart(cartID);
-            try {
-                boolean result = cartDAO.delete(cart);
-                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            RequestDispatcher rd= request.getRequestDispatcher(MainController.viewCart);
-                rd.forward(request, response);
+           String url = MainController.viewCart;
+           String cartIDs []= request.getParameterValues("selectedCarts");
+           ArrayList<Integer> cartIDList =convertStringToInt(cartIDs);
+           ArrayList<CartDTO> carts= getCarts(cartIDList);
+           
+           if(deleteCarts(carts)){
+               RequestDispatcher rd= request.getRequestDispatcher(url);
+               rd.forward(request, response);
+           }else{out.print("Cart was not deleted correctly");}
         }
     }
 

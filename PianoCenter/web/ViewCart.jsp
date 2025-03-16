@@ -68,9 +68,9 @@
                         <form action="MainController?from=refreshForError">
                             <td>
                             <input type="text" name="currentQuantity" value="<%=cart.getQuantity()%>"/>
-                            <input type="submit"  name="btAction" value="updateCart" />
+                            <input type="submit" style="display: none" name="btAction" value="updateCart" />
                             <input type="hidden" name="currentCartID" value="<%=cart.getCartID()%>" />
-                            <input type="submit" value="DeleteCart" name="btAction" />
+                            
                             </td>
                    
                         
@@ -89,13 +89,13 @@
                 if (error!=null){
                 %>
                 <tr>
-                    <td colspan="3">
+                        <td colspan="3">
                             <span style="font-family: fantasy;color: red"><%=error%></span>
                             
                         </td>
 
                 </tr>
-                
+
 
                 <%}%>
                 <tr>
@@ -108,9 +108,10 @@
                             
                         </td>
                         <td colspan="3">
-                            <span></span>
                             <input type="submit" name="btAction" value="Booking" />
+                            <input type="submit" value="Remove" name="btAction" />
                         </td>
+
                         
                 </tr>
             </tbody>

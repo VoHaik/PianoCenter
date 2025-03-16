@@ -67,7 +67,7 @@ public class MainController extends HttpServlet {
                 }
                 else if(action.equals("Booking")) {url=validateCartController;}
                 else if(action.equals("updateCart")) {url=updateCartController;}
-                else if(action.equals("DeleteCart")) {url=deleteCartController;}
+                else if(action.equals("Remove")) {url=deleteCartController;}
                 RequestDispatcher rd= request.getRequestDispatcher(url);
                 rd.forward(request, response);
             }else{out.println("Error With url");}
