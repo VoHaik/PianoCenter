@@ -57,7 +57,7 @@ public class ValidateCart extends HttpServlet {
         }
         return courses;
     }
-    private void updateCourseDAO(ArrayList<CartDTO> carts,ArrayList<CourseDTO> courses,HttpSession session){
+    private void updateCourseDAO(ArrayList<CartDTO> carts,ArrayList<CourseDTO> courses,HttpServletRequest request){
         CourseDAO courseDAO= new CourseDAO();
         CartDAO cartDAO= new CartDAO();
         for(CartDTO cart: carts){
@@ -68,7 +68,7 @@ public class ValidateCart extends HttpServlet {
                         course.setQuantity(trueQuantity);
                         courseDAO.update(course);
                         cartDAO.delete(cart);
-                    }else{session.setAttribute(String.valueOf(course.getCourseID()), "Not enough quantity");}
+                    }else{request.setAttribute(String.valueOf(course.getCourseID()), "Not enough quantity");}
                 }
             }
         }
@@ -88,8 +88,8 @@ public class ValidateCart extends HttpServlet {
         ArrayList<Integer> cartIDList= convertStringToInt(cartIDs);
         ArrayList<CartDTO> carts= getCarts(cartIDList);
         ArrayList<CourseDTO> courses= getCourseInCart(carts);
-        HttpSession session=request.getSession();
-        updateCourseDAO(carts, courses, session);
+//        HttpSession session=request.getSession();
+        updateCourseDAO(carts, courses, request);
         
         RequestDispatcher rd=request.getRequestDispatcher(MainController.viewCart);
         rd.forward(request, response);

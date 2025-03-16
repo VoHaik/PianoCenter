@@ -57,7 +57,7 @@
                     BigDecimal total = tutionFee.multiply(quantity);
                     int quantityOfCourse= dao.getCourse(cart.getCourseID()).getQuantity();
                     totalAll=totalAll.add(total);
-                    String errorCode=(String) session.getAttribute(String.valueOf(cart.getCourseID()));
+                    String errorCode=(String) request.getAttribute(String.valueOf(cart.getCourseID()));
                 %>
                 <tr>
                     
@@ -79,13 +79,15 @@
                     <td><%=total%></td>
                     <td><input type="checkbox" name="selectedCarts" value="<%=cart.getCartID()%>" /></td>
                     <%if(errorCode!=null){%>
+                        
                     <td><span style="color: red"><%=errorCode%></span></td>
+                        
                     <%}%>
 
                 </tr>
                 <%}%>
                 <%String error = (String)request.getAttribute("error");
-                if (error!=null){
+                    if (error!=null){
                 %>
                 <tr>
                         <td colspan="3">
