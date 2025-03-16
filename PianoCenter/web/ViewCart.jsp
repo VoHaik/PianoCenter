@@ -58,14 +58,13 @@
                     int quantityOfCourse= dao.getCourse(cart.getCourseID()).getQuantity();
                     totalAll=totalAll.add(total);
                     String errorCode=(String) session.getAttribute(String.valueOf(cart.getCourseID()));
-                    String conditionForError =request.getParameter("refreshForError");
                 %>
                 <tr>
                     
                     <td><%=dao.getCourse(cart.getCourseID()).getName()%></td>
                     <td><%=dao.getCourse(cart.getCourseID()).getTutionFee()%></td>
                     
-                        <form action="MainController?from=refreshForError">
+                        <form action="MainController">
                             <td>
                             <input type="text" name="currentQuantity" value="<%=cart.getQuantity()%>"/>
                             <input type="submit" style="display: none" name="btAction" value="updateCart" />

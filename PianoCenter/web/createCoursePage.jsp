@@ -114,15 +114,15 @@
     <% } %>
     <br>
 
-    <label>Last Updated By:</label>
-    <input type="text" name="txtLastUpdateUser" value="<%= lastUpdateUser %>" />
+    
+    <input type="hidden" name="txtLastUpdateUser" value="<%= session.getAttribute("username") %>" />
     <br>
 
 
     <input type="submit" name="btAction" value="createCourse" />
     <input type="reset" />
 </form>
-
+    <a href="HomePage.jsp">Go back to homepage</a>
 </body>
 </html>
 

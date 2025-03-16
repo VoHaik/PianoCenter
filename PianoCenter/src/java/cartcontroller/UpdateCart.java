@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -35,6 +36,7 @@ public class UpdateCart extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
         boolean result=false;
         try {
             int currentQuantity= Integer.parseInt(request.getParameter("currentQuantity"));
@@ -44,6 +46,7 @@ public class UpdateCart extends HttpServlet {
             cart.setQuantity(currentQuantity);
             result=cartDAO.update(cart);
             if(result){
+                session.removeAttribute(String.valueOf(cart.getCourseID()));
                 RequestDispatcher rd= request.getRequestDispatcher(MainController.viewCart);
                 rd.forward(request, response);
             }else{out.print("Update failed");}

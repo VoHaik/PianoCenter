@@ -77,7 +77,7 @@ public class ValidateCart extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        CourseDAO dao = new CourseDAO();
+//        CourseDAO dao = new CourseDAO();
         String cartIDs[]= request.getParameterValues("selectedCarts");
          if (cartIDs == null || cartIDs.length == 0) {
             request.setAttribute("error", "No courses selected.");
