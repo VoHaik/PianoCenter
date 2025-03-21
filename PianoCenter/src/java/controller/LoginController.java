@@ -50,7 +50,7 @@ public class LoginController extends HttpServlet {
         session.setAttribute("role", validateLogin);
         
         try{
-            if(validateLogin!=null){
+            if(!validateLogin.equalsIgnoreCase("Guest")){
                url=MainController.authorizationController;
                session.setAttribute("username", username);
                session.setAttribute("invalidLogin", true);
