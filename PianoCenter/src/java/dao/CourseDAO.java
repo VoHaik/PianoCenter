@@ -152,7 +152,7 @@ public class CourseDAO implements ICRUD<CourseDTO, Integer>{
         Connection con=null;
         ResultSet rs=null;
         PreparedStatement stm= null;
-        String sql="update Courses set name=?, description=?,tuitionFee=?,startDate=?,category=?,createDate=?,status=?,quantity=?,lastUpdateUser=? \n" +
+        String sql="update Courses set name=?, description=?,tuitionFee=?,startDate=?,endDate=?,category=?,createDate=?,status=?,quantity=?,lastUpdateUser=? \n" +
 "where courseID =?";
         try {
             con=dbutils.DBUtils.makeConnection();
@@ -161,12 +161,13 @@ public class CourseDAO implements ICRUD<CourseDTO, Integer>{
             stm.setString(2, entity.getDescription());
             stm.setBigDecimal(3, entity.getTutionFee());
             stm.setDate(4, entity.getStartDate());
-            stm.setString(5, entity.getCategory());
-            stm.setDate(6, entity.getCreateDate());
-            stm.setString(7, entity.getStatus());
-            stm.setInt(8, entity.getQuantity());
-            stm.setString(9, entity.getLastUpdateUser());
-            stm.setInt(10, entity.getCourseID());
+            stm.setDate(5, entity.getEndDate());
+            stm.setString(6, entity.getCategory());
+            stm.setDate(7, entity.getCreateDate());
+            stm.setString(8, entity.getStatus());
+            stm.setInt(9, entity.getQuantity());
+            stm.setString(10, entity.getLastUpdateUser());
+            stm.setInt(11, entity.getCourseID());
             int row= stm.executeUpdate();
             if(row>0){return true;}
         } catch (Exception e) {
