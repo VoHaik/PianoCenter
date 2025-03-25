@@ -112,10 +112,10 @@
                             <input type="text" name="tution" value="<%=dto.getTutionFee()%>" />
                         </td>
                         <td>
-                            <input type="text" name="startDate" value="<%=dto.getStartDate()%>" />
+                            <input type="date" name="startDate" value="<%=dto.getStartDate()%>" />
                         </td>
                         <td>
-                            <input type="text" name="endDate" value="<%=dto.getEndDate()%>" />
+                            <input type="date" name="endDate" value="<%=dto.getEndDate()%>" />
                         </td>
                         <td>
                             
@@ -132,7 +132,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" name="createDate" value="<%=dto.getCreateDate()%>" />
+                            <input type="date" name="createDate" value="<%=dto.getCreateDate()%>" />
                         </td>
                         <td>
                             <%=dto.getLastUpdateUser()%>

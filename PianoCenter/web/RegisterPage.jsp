@@ -82,7 +82,7 @@
         <% if (!invalidPhone) { %>
             <span style="color: red">Your phone is invalid!!</span>
         <% } else if (existPhone) { %>
-            <span style="color: red">Your password was existed!!</span>
+            <span style="color: red">Your phone was existed!!</span>
         <% } %>
     <%}else{%>
         <span>10 số từ 0-9  </span>
